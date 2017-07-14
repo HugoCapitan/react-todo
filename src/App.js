@@ -18,11 +18,21 @@ class App extends React.Component {
   }
   appendTodo(e) {
     let todos = this.state.todos;
-    todos.push(this.state.actualTodo);
-    this.setState({todos, actualTodo: {
-      text: '',
-      done: false
-    }});
+    console.log(this.state.actualTodo.text);
+    if (this.state.actualTodo.text !== '') {
+      todos.push(this.state.actualTodo);
+      this.setState({todos, actualTodo: {
+        text: '',
+        done: false
+      }});
+    }
+    return false;
+  }
+  appendOnEnter(e) {
+    console.log(e.key);
+    if (e.key === 'Enter') {
+      this.appendTodo();
+    }
   }
   editTodo(editIndex) {
     this.setState({actualTodo: this.state.todos[editIndex]});
@@ -49,7 +59,10 @@ class App extends React.Component {
     let todos = this.state.todos;
     return (
       <div id="app">
-        <TodoInput val={this.state.actualTodo.text} appenMethod={this.appendTodo.bind(this)} changeMethod={this.update.bind(this)}/>
+        <TodoInput val={this.state.actualTodo.text}
+          appendMethod={this.appendTodo.bind(this)}
+          changeMethod={this.update.bind(this)}
+          appendOnEnterMethod={this.appendOnEnter.bind(this)}/>
         { todos.map((todo, index) => (
           <Todo key={`todo-${index}`}
                 index={index}
@@ -67,14 +80,10 @@ class App extends React.Component {
 
 const TodoInput = (props) => (
   <div id="input">
-    <input value={props.val} type="text" onChange={props.changeMethod}/>
-    <button onClick={props.appenMethod}>Add</button>
+    <input value={props.val} type="text" onChange={props.changeMethod} onKeyPress={props.appendOnEnterMethod}/>
+    <button onClick={props.appendMethod}>Add</button>
   </div>
 )
-
-TodoInput.propTypes = {
-  appenMethod: React.PropTypes.func.isRequired
-}
 
 const Todo = (props) => (
   <div className="todo">

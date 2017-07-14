@@ -50,14 +50,16 @@ class App extends React.Component {
     return (
       <div id="app">
         <TodoInput val={this.state.actualTodo.text} appenMethod={this.appendTodo.bind(this)} changeMethod={this.update.bind(this)}/>
-        { todos.map((todo, index) =>
+        { todos.map((todo, index) => (
           <Todo key={`todo-${index}`}
                 index={index}
                 text={todo.text}
                 done={todo.done}
                 editMethod={this.editTodo.bind(this, index)}
                 removeMethod={this.removeTodo.bind(this, index)}
-                toggleMethod={this.toggleTodoDone.bind(this, index)}/> )}
+                toggleMethod={this.toggleTodoDone.bind(this, index)}/>
+            )
+        )}
       </div>
     );
   }
